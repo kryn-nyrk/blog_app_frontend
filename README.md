@@ -1,4 +1,4 @@
-# blog_app_backend
+# blog_app_frontend
 
 ## 概要
 - 簡易的な記事を投稿できるウェブアプリ
