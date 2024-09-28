@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-
-type Post = {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-};
+import { Post } from "../types";
+import PostList from "./PostList";
+import EditPostForm from "./EditPostForm";
 
 const BlogPosts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -79,60 +75,20 @@ const BlogPosts: React.FC = () => {
       <h1 className="text-3xl font-bold my-4">Blog Posts</h1>
 
       {editingPost ? (
-        <div>
-          <h2 className="text-2xl font-semibold">Edit Post</h2>
-          <input
-            type="text"
-            value={editingPost.title}
-            onChange={(e) =>
-              setEditingPost({ ...editingPost, title: e.target.value })
-            }
-            className="border p-2 w-full mb-2"
-          />
-          <textarea
-            value={editingPost.content}
-            onChange={(e) =>
-              setEditingPost({ ...editingPost, content: e.target.value })
-            }
-            rows={6}
-            className="border p-2 w-full mb-2"
-          />
-          <button
-            onClick={handleUpdate}
-            className="rounded-sm bg-green-500 hover:bg-green-400 p-2 text-white"
-          >
-            Update
-          </button>
-        </div>
+        <EditPostForm
+          editingPost={editingPost}
+          onTitleChange={(e) =>
+            setEditingPost({ ...editingPost, title: e.target.value })
+          }
+          onContentChange={(e) =>
+            setEditingPost({ ...editingPost, content: e.target.value })
+          }
+          onUpdate={handleUpdate}
+        />
       ) : (
-        <ul>
-          {posts.map((post) => (
-            <li key={post.id} className="border-b py-2">
-              <h2 className="text-2xl font-semibold">
-                {post.id}: {post.title}
-              </h2>
-              <p>{post.content}</p>
-              <p className="text-gray-500 text-right text-sm">
-                投稿日: {post.created_at}
-              </p>
-              <button
-                onClick={() => handleDelete(post.id)}
-                className="rounded-sm bg-red-500 hover:bg-red-400 p-2 text-white"
-              >
-                Delete
-              </button>
-              <button
-                onClick={() => handleEdit(post)}
-                className="rounded-sm bg-green-500 hover:bg-green-400 p-2 text-white ml-2"
-              >
-                Edit
-              </button>
-            </li>
-          ))}
-        </ul>
+        <PostList posts={posts} onDelete={handleDelete} onEdit={handleEdit} />
       )}
     </div>
   );
 };
-
 export default BlogPosts;
